@@ -165,6 +165,7 @@ export function attachTemplateButton(textarea) {
     button.className = 'autocomplete-plus-template-button';
     button.textContent = 'Styles';
     button.title = 'Insert a prompt style from styles.csv';
+    button.style.position = 'fixed';
     button.addEventListener('mousedown', (event) => event.preventDefault());
     button.addEventListener('click', async () => {
         try {
@@ -175,11 +176,16 @@ export function attachTemplateButton(textarea) {
         }
     });
 
-    const parent = textarea.parentElement;
-    if (parent) {
-        if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
-        parent.append(button);
-    }
+    const updatePosition = () => {
+        const rect = textarea.getBoundingClientRect();
+        button.style.left = `${Math.max(4, rect.right - 68)}px`;
+        button.style.top = `${rect.top + 6}px`;
+    };
+    document.body.append(button);
+    updatePosition();
+    textarea.addEventListener('focus', updatePosition);
+    window.addEventListener('resize', updatePosition);
+    document.addEventListener('scroll', updatePosition, true);
 }
 
 document.addEventListener('click', (event) => {

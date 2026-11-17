@@ -433,10 +433,10 @@ body.dark-theme {
   text-align: center;
 }
 .autocomplete-plus-template-button {
-    position: absolute;
-    right: 6px;
-    top: 6px;
-    z-index: 2;
+    position: fixed;
+    right: auto;
+    top: auto;
+    z-index: 10000;
     padding: 2px 6px;
     border: 1px solid var(--p-inputtext-border-color, #777);
     border-radius: 3px;
