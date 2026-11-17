@@ -1,3 +1,5 @@
+import { loadTranslations, t } from './i18n.js';
+import { openTemplateMenu } from './templates.js';
 import {
     ModelTagSource,
     TagData,
@@ -396,6 +398,38 @@ class AutocompleteUI {
         this.iconSvgDef.innerHTML = IconSvgHtmlString;
         this.root.appendChild(this.iconSvgDef);
 
+        this.header = document.createElement('div');
+        this.header.id = 'autocomplete-plus-header';
+        const title = document.createElement('div');
+        const controls = document.createElement('div');
+        controls.className = 'related-tags-header-controls';
+        const stylesButton = document.createElement('button');
+        stylesButton.type = 'button';
+        stylesButton.className = 'related-tags-style-button';
+        stylesButton.textContent = '★';
+        const updateHeader = () => {
+            title.textContent = t('title', 'Prompt styles');
+            const label = t('favorites', 'Favorite prompt styles');
+            stylesButton.title = label;
+            stylesButton.setAttribute('aria-label', label);
+        };
+        updateHeader();
+        loadTranslations().then(updateHeader);
+        stylesButton.addEventListener('focus', updateHeader);
+        stylesButton.addEventListener('mouseenter', updateHeader);
+        stylesButton.addEventListener('click', async (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            try {
+                await openTemplateMenu(this.target, stylesButton);
+            } catch (error) {
+                console.error('[Autocomplete-Plus] Failed to load styles:', error);
+            }
+        });
+        controls.appendChild(stylesButton);
+        this.header.append(title, controls);
+        this.root.appendChild(this.header);
+
         this.tagsList = document.createElement('div');
         this.tagsList.id = 'autocomplete-plus-list';
         this.root.appendChild(this.tagsList);
@@ -443,10 +477,6 @@ class AutocompleteUI {
      */
     updateDisplay(textareaElement) {
         this.candidates = searchCompletionCandidates(textareaElement);
-        if (this.candidates.length <= 0) {
-            this.hide();
-            return;
-        }
 
         this.target = textareaElement;
 
@@ -692,7 +722,7 @@ class AutocompleteUI {
         this.root.style.left = `${leftPosition}px`;
         this.root.style.top = `${topPosition}px`;
         this.root.style.maxWidth = `${maxWidth}px`;
-        this.tagsList.style.maxHeight = `${maxHeight}px`;
+        this.tagsList.style.maxHeight = `${Math.max(0, maxHeight - this.header.getBoundingClientRect().height)}px`;
     }
 
     /** Highlights the item (row) at the given index */

@@ -262,7 +262,8 @@ body.dark-theme {
   color: var(--autocomplete-plus-text-color-cat-gray);
 }
 
-#related-tags-header {
+#related-tags-header,
+#autocomplete-plus-header {
   position: sticky;
   z-index: 1;
   top: 0;
