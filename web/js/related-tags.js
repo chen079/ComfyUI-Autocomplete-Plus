@@ -1,5 +1,6 @@
 import { TagCategory, TagData, TagSource, autoCompleteData, getEnabledTagSourceInPriorityOrder } from './data.js';
 import { settingValues } from './settings.js';
+import { openTemplateMenu } from './templates.js';
 import {
     extractTagsFromTextArea,
     findAllTagPositions,
@@ -261,6 +262,23 @@ class RelatedTagsUI {
             e.stopPropagation();
         });
         this.headerControls.appendChild(this.pinBtn);
+
+        this.stylesBtn = document.createElement('button');
+        this.stylesBtn.type = 'button';
+        this.stylesBtn.className = 'related-tags-style-button';
+        this.stylesBtn.textContent = '★';
+        this.stylesBtn.title = 'Favorite prompt styles';
+        this.stylesBtn.setAttribute('aria-label', 'Favorite prompt styles');
+        this.stylesBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            try {
+                await openTemplateMenu(this.target, this.stylesBtn);
+            } catch (error) {
+                console.error('[Autocomplete-Plus] Failed to load styles:', error);
+            }
+        });
+        this.headerControls.appendChild(this.stylesBtn);
 
         this.header.appendChild(this.headerControls);
 

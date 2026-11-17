@@ -432,19 +432,6 @@ body.dark-theme {
   font-style: italic;
   text-align: center;
 }
-.autocomplete-plus-template-button {
-    position: fixed;
-    right: auto;
-    top: auto;
-    z-index: 10000;
-    padding: 2px 6px;
-    border: 1px solid var(--p-inputtext-border-color, #777);
-    border-radius: 3px;
-    background: var(--p-inputtext-background, #222);
-    color: var(--p-text-color, #ddd);
-    cursor: pointer;
-}
-
 .autocomplete-plus-template-menu {
     position: fixed;
     z-index: 10000;

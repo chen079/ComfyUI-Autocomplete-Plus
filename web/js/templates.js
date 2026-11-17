@@ -156,41 +156,14 @@ function openMenu(textarea, button) {
     activeMenu = menu;
 }
 
-export function attachTemplateButton(textarea) {
-    if (textarea.dataset.autocompletePlusTemplates) return;
-    textarea.dataset.autocompletePlusTemplates = 'true';
-
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'autocomplete-plus-template-button';
-    button.textContent = 'Styles';
-    button.title = 'Insert a prompt style from styles.csv';
-    button.style.position = 'fixed';
-    button.addEventListener('mousedown', (event) => event.preventDefault());
-    button.addEventListener('click', async () => {
-        try {
-            await loadStyles();
-            openMenu(textarea, button);
-        } catch (error) {
-            console.error('[Autocomplete-Plus] Failed to load styles:', error);
-        }
-    });
-
-    const updatePosition = () => {
-        const rect = textarea.getBoundingClientRect();
-        button.style.left = `${Math.max(4, rect.left + 6)}px`;
-        button.style.top = `${rect.bottom + 4}px`;
-        button.style.right = 'auto';
-    };
-    document.body.append(button);
-    updatePosition();
-    textarea.addEventListener('focus', updatePosition);
-    window.addEventListener('resize', updatePosition);
-    document.addEventListener('scroll', updatePosition, true);
+export async function openTemplateMenu(textarea, button) {
+    if (!textarea) return;
+    await loadStyles();
+    openMenu(textarea, button);
 }
 
 document.addEventListener('click', (event) => {
-    if (activeMenu && !activeMenu.contains(event.target) && !event.target.classList.contains('autocomplete-plus-template-button')) {
+    if (activeMenu && !activeMenu.contains(event.target) && !event.target.closest('.related-tags-style-button')) {
         closeMenu();
     }
 });
