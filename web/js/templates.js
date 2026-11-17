@@ -137,19 +137,20 @@ function openMenu(textarea, button) {
 
     const actions = document.createElement('div');
     actions.className = 'autocomplete-plus-template-actions';
-    for (const [label, key] of [[t('positive', 'Positive'), 'prompt'], [t('negative', 'Negative'), 'negative_prompt']]) {
-        const action = document.createElement('button');
-        action.type = 'button';
-        action.textContent = label;
-        action.addEventListener('click', () => {
-            const style = styles[Number(select.value)];
-            if (!style) return;
-            insertText(textarea, style[key]);
-            closeMenu();
-        });
-        actions.append(action);
-    }
-    actions.append(makeButton(t('manage', 'Manage'), openEditor));
+    const updateActions = () => {
+        actions.replaceChildren();
+        const style = styles[Number(select.value)];
+        for (const [label, key] of [[t('positive', 'Positive'), 'prompt'], [t('negative', 'Negative'), 'negative_prompt']]) {
+            if (!style?.[key]?.trim()) continue;
+            actions.append(makeButton(label, () => {
+                insertText(textarea, style[key]);
+                closeMenu();
+            }));
+        }
+        actions.append(makeButton(t('manage', 'Manage'), openEditor));
+    };
+    select.addEventListener('change', updateActions);
+    updateActions();
     menu.append(select, actions);
     document.body.append(menu);
     const rect = button.getBoundingClientRect();
