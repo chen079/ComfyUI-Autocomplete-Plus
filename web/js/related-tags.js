@@ -350,24 +350,15 @@ class RelatedTagsUI {
      * Display
      * @param {HTMLTextAreaElement} textareaElement The textarea being used
      */
-    show(textareaElement) {
-        if (!settingValues.enableRelatedTags) {
-            this.hide();
-            return;
-        }
-
-        // Get the tag at current cursor position
+    show(textareaElement, showRelatedTags = true) {
         const currentTag = getTagFromCursorPosition(textareaElement);
+        const relatedTagsEnabled = settingValues.enableRelatedTags && showRelatedTags;
 
-        if (!this.isPinned) {
-            if (!isLongText(currentTag) && isValidTag(currentTag)) {
-                this.currentTag = currentTag
-            } else {
-                this.hide();
-                return;
-            }
+        if (!this.isPinned || !relatedTagsEnabled) {
+            this.currentTag = relatedTagsEnabled && !isLongText(currentTag) && isValidTag(currentTag) ? currentTag : null;
         }
 
+        this.selectedIndex = -1;
         this.target = textareaElement;
 
         this.relatedTags = searchRelatedTags(this.currentTag);
@@ -383,7 +374,7 @@ class RelatedTagsUI {
         this.#highlightItem();
 
         // Update initialization status if not already done
-        if (!autoCompleteData[TagSource.Danbooru].initialized) {
+        if (this.currentTag && !autoCompleteData[TagSource.Danbooru].initialized) {
             if (this.autoRefreshTimerId) {
                 clearTimeout(this.autoRefreshTimerId);
             }
@@ -472,6 +463,21 @@ class RelatedTagsUI {
      * Updates header content
      */
     #updateHeader() {
+        // Update pin button
+        this.pinBtn.textContent = this.isPinned ? '🎯' : '📌';
+
+        // Update the button icon
+        this.toggleLayoutBtn.innerHTML = settingValues.relatedTagsDisplayPosition === 'vertical'
+            ? '↔️' // Click to change display horizontally
+            : '↕️'; // Click to change display vertically
+
+        if (!this.currentTag) {
+            this.headerText.textContent = t('title', 'Prompt styles');
+            this.headerAlias.textContent = '';
+            this.headerAlias.style.display = 'none';
+            return;
+        }
+
         let tagData = this.getCurrentTagData();
 
         if (!tagData) {
@@ -516,14 +522,6 @@ class RelatedTagsUI {
             this.headerAlias.textContent = aliasText;
             this.headerAlias.style.display = 'block';
         }
-
-        // Update pin button
-        this.pinBtn.textContent = this.isPinned ? '🎯' : '📌';
-
-        // Update the button icon
-        this.toggleLayoutBtn.innerHTML = settingValues.relatedTagsDisplayPosition === 'vertical'
-            ? '↔️' // Click to change display horizontally
-            : '↕️'; // Click to change display vertically
     }
 
     /**
@@ -531,6 +529,8 @@ class RelatedTagsUI {
      */
     #updateContent() {
         this.tagsContainer.innerHTML = '';
+        this.tagsContainer.style.display = this.currentTag ? '' : 'none';
+        if (!this.currentTag) return;
 
         if (!autoCompleteData[TagSource.Danbooru].initialized) {
             // Show loading message
@@ -904,13 +904,7 @@ export class RelatedTagsEventHandler {
      * @returns 
      */
     handleClick(event) {
-        // Hide related tags UI if not Ctrl+Click and not pinned when trigger mode is 'ctrl+Click'
-        if (settingValues.relatedTagsTriggerMode === 'ctrl+Click' && !event.ctrlKey && !this.relatedTagsUI.isPinned) {
-            this.relatedTagsUI.hide();
-            return;
-        }
-
-        const textareaElement = event.target;
-        this.relatedTagsUI.show(textareaElement);
+        const showRelatedTags = settingValues.relatedTagsTriggerMode !== 'ctrl+Click' || event.ctrlKey || this.relatedTagsUI.isPinned;
+        this.relatedTagsUI.show(event.target, showRelatedTags);
     }
 }
