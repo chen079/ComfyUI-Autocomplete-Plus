@@ -535,10 +535,7 @@ class AutocompleteUI {
      */
     #updateContent() {
         this.tagsList.innerHTML = '';
-        if (this.candidates.length === 0) {
-            this.hide();
-            return;
-        }
+        if (this.candidates.length === 0) return;
 
         this.tagsList.classList.toggle('no-alias', settingValues.hideAlias);
 
