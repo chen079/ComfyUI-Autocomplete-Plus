@@ -154,6 +154,19 @@ For example, by preparing the following CSV, you can quickly insert correspondin
 
 ## Settings
 
+### Prompt Styles
+
+Place a `styles.csv` file in the ComfyUI root directory using the WebUI-compatible columns:
+
+```csv
+name,prompt,negative_prompt
+Quality,"masterpiece, best quality","lowres, blurry"
+```
+
+Multiline and quoted CSV fields are supported. Focus any multiline prompt field and click
+`Styles` to insert the selected template's positive or negative prompt. Changes to the file
+are picked up after refreshing the browser.
+
 ### Tag Source
 
 > [!NOTE]

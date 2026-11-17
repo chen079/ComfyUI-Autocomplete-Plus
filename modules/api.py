@@ -1,5 +1,7 @@
 import json
 import os
+import csv
+import io
 
 import folder_paths
 import server
@@ -18,6 +20,18 @@ E621_PREFIX = "e621"
 
 TAGS_SUFFIX = "tags"
 COOCCURRENCE_SUFFIX = "tags_cooccurrence"
+
+STYLES_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "styles.csv"))
+
+
+def _ensure_styles_file():
+    if os.path.exists(STYLES_FILE):
+        return
+    with open(STYLES_FILE, "w", encoding="utf-8", newline="") as f:
+        f.write("name,prompt,negative_prompt\n")
+
+
+_ensure_styles_file()
 
 
 def get_csv_file_status():
@@ -96,6 +110,51 @@ def get_last_check_time_from_metadata():
 
 
 # --- API Endpoints ---
+
+
+def _read_styles():
+    if not os.path.exists(STYLES_FILE):
+        return []
+
+    with open(STYLES_FILE, "r", encoding="utf-8-sig", newline="") as f:
+        return [
+            {
+                "name": row.get("name", "").strip(),
+                "prompt": row.get("prompt", ""),
+                "negative_prompt": row.get("negative_prompt", ""),
+            }
+            for row in csv.DictReader(f)
+            if row.get("name", "").strip()
+        ]
+
+
+@server.PromptServer.instance.routes.get("/autocomplete-plus/styles")
+async def get_styles(_request):
+    return web.json_response({"styles": _read_styles()})
+
+
+@server.PromptServer.instance.routes.post("/autocomplete-plus/styles")
+async def save_styles(request):
+    payload = await request.json()
+    styles = payload.get("styles")
+    if not isinstance(styles, list):
+        return web.json_response({"error": "styles must be a list"}, status=400)
+
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(output, fieldnames=["name", "prompt", "negative_prompt"])
+    writer.writeheader()
+    for style in styles:
+        if not isinstance(style, dict) or not str(style.get("name", "")).strip():
+            continue
+        writer.writerow({
+            "name": str(style.get("name", "")).strip(),
+            "prompt": str(style.get("prompt", "")),
+            "negative_prompt": str(style.get("negative_prompt", "")),
+        })
+
+    with open(STYLES_FILE, "w", encoding="utf-8", newline="") as f:
+        f.write(output.getvalue())
+    return web.json_response({"success": True})
 
 
 @server.PromptServer.instance.routes.get("/autocomplete-plus/csv")

@@ -7,6 +7,7 @@ import { AutocompleteEventHandler } from "./autocomplete.js";
 import { RelatedTagsEventHandler } from "./related-tags.js";
 import { AutoFormatterEventHandler } from "./auto-formatter.js";
 import { NodeInfo } from "./node-info.js";
+import { attachTemplateButton } from "./templates.js";
 
 // --- Constants ---
 const id = "AutocompletePlus";
@@ -39,6 +40,7 @@ function initializeEventHandlers() {
         element.addEventListener('click', handleClick);
 
         attachedElementNodeInfoMap.set(element, nodeInfo); // Mark as attached and store node info
+        attachTemplateButton(element);
     }
 
     // Attempt Widget Override as the primary method
