@@ -563,6 +563,10 @@ class AutocompleteUI {
         tagRow.classList.add('autocomplete-plus-item', tagData.source);
         tagRow.dataset.index = tagDataIndex;
         tagRow.dataset.tagCategory = categoryText; // Used to color by CSS
+        tagRow.addEventListener('mouseenter', () => {
+            this.selectedIndex = tagDataIndex;
+            this.#highlightItem(false);
+        });
 
         // Tag icon and name
         const tagSourceIconHtml = `<svg class="autocomplete-plus-tag-icon-svg"><use xlink:href="#autocomplete-plus-icon-${tagData.source}"></use></svg>`;
@@ -723,14 +727,14 @@ class AutocompleteUI {
     }
 
     /** Highlights the item (row) at the given index */
-    #highlightItem() {
+    #highlightItem(scroll = true) {
         if (!this.getSelectedTagData()) return; // No valid selection
 
         const items = this.tagsList.children; // Get rows from tbody
         for (let i = 0; i < items.length; i++) {
             if (i === this.selectedIndex) {
                 items[i].classList.add('selected'); // Use CSS class for selection
-                items[i].scrollIntoView({ block: 'nearest' });
+                if (scroll) items[i].scrollIntoView({ block: 'nearest' });
             } else {
                 items[i].classList.remove('selected');
             }

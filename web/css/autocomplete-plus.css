@@ -143,10 +143,6 @@ body.dark-theme {
   background-color: var(--border-color);
 }
 
-.autocomplete-plus-item:hover {
-  background-color: var(--comfy-hover-bg);
-}
-
 .autocomplete-plus-item .autocomplete-plus-tag-name {
   white-space: nowrap;
 }
