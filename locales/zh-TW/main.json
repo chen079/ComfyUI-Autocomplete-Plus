@@ -6,5 +6,19 @@
     "Related Tags": "相關標籤",
     "Display": "顯示",
     "AutoFormatter": "自動格式化"
+  },
+  "autocompletePlusStyles": {
+    "favorites": "收藏提示詞樣式",
+    "title": "提示詞樣式",
+    "name": "樣式名稱",
+    "prompt": "正向提示詞",
+    "negativePrompt": "負向提示詞",
+    "new": "新增",
+    "save": "儲存",
+    "delete": "刪除",
+    "close": "關閉",
+    "positive": "正向",
+    "negative": "負向",
+    "manage": "管理"
   }
 }

@@ -6,5 +6,19 @@
     "Related Tags": "Related Tags",
     "Display": "Display",
     "AutoFormatter": "AutoFormatter"
+  },
+  "autocompletePlusStyles": {
+    "favorites": "Favorite prompt styles",
+    "title": "Prompt styles",
+    "name": "Style name",
+    "prompt": "Positive prompt",
+    "negativePrompt": "Negative prompt",
+    "new": "New",
+    "save": "Save",
+    "delete": "Delete",
+    "close": "Close",
+    "positive": "Positive",
+    "negative": "Negative",
+    "manage": "Manage"
   }
 }

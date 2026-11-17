@@ -6,5 +6,19 @@
     "Related Tags": "相关标签",
     "Display": "显示",
     "AutoFormatter": "自动格式化"
+  },
+  "autocompletePlusStyles": {
+    "favorites": "收藏提示词样式",
+    "title": "提示词样式",
+    "name": "样式名称",
+    "prompt": "正向提示词",
+    "negativePrompt": "负向提示词",
+    "new": "新建",
+    "save": "保存",
+    "delete": "删除",
+    "close": "关闭",
+    "positive": "正向",
+    "negative": "负向",
+    "manage": "管理"
   }
 }

@@ -1,3 +1,5 @@
+import { loadTranslations, t } from './i18n.js';
+
 let styles = [];
 let stylesLoaded = false;
 let activeMenu = null;
@@ -40,16 +42,16 @@ function openEditor() {
     const dialog = document.createElement('div');
     dialog.className = 'autocomplete-plus-style-editor-dialog';
     const title = document.createElement('h3');
-    title.textContent = 'Prompt Styles';
+    title.textContent = t('title', 'Prompt styles');
     const list = document.createElement('select');
     list.className = 'autocomplete-plus-style-list';
     let editingIndex = -1;
     const name = document.createElement('input');
-    name.placeholder = 'Style name';
+    name.placeholder = t('name', 'Style name');
     const prompt = document.createElement('textarea');
-    prompt.placeholder = 'Positive prompt';
+    prompt.placeholder = t('prompt', 'Positive prompt');
     const negativePrompt = document.createElement('textarea');
-    negativePrompt.placeholder = 'Negative prompt';
+    negativePrompt.placeholder = t('negativePrompt', 'Negative prompt');
     const form = document.createElement('div');
     form.className = 'autocomplete-plus-style-form';
     form.append(name, prompt, negativePrompt);
@@ -99,7 +101,7 @@ function openEditor() {
     list.addEventListener('change', loadSelected);
     const actions = document.createElement('div');
     actions.className = 'autocomplete-plus-style-editor-actions';
-    actions.append(makeButton('New', add), makeButton('Save', save), makeButton('Delete', remove), makeButton('Close', () => overlay.remove()));
+    actions.append(makeButton(t('new', 'New'), add), makeButton(t('save', 'Save'), save), makeButton(t('delete', 'Delete'), remove), makeButton(t('close', 'Close'), () => overlay.remove()));
     dialog.append(title, list, form, actions);
     overlay.append(dialog);
     overlay.addEventListener('click', (event) => { if (event.target === overlay) overlay.remove(); });
@@ -135,7 +137,7 @@ function openMenu(textarea, button) {
 
     const actions = document.createElement('div');
     actions.className = 'autocomplete-plus-template-actions';
-    for (const [label, key] of [['Positive', 'prompt'], ['Negative', 'negative_prompt']]) {
+    for (const [label, key] of [[t('positive', 'Positive'), 'prompt'], [t('negative', 'Negative'), 'negative_prompt']]) {
         const action = document.createElement('button');
         action.type = 'button';
         action.textContent = label;
@@ -147,7 +149,7 @@ function openMenu(textarea, button) {
         });
         actions.append(action);
     }
-    actions.append(makeButton('Manage', openEditor));
+    actions.append(makeButton(t('manage', 'Manage'), openEditor));
     menu.append(select, actions);
     document.body.append(menu);
     const rect = button.getBoundingClientRect();
@@ -158,7 +160,7 @@ function openMenu(textarea, button) {
 
 export async function openTemplateMenu(textarea, button) {
     if (!textarea) return;
-    await loadStyles();
+    await Promise.all([loadStyles(), loadTranslations()]);
     openMenu(textarea, button);
 }
 

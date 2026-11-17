@@ -1,5 +1,6 @@
 import { TagCategory, TagData, TagSource, autoCompleteData, getEnabledTagSourceInPriorityOrder } from './data.js';
 import { settingValues } from './settings.js';
+import { loadTranslations, t } from './i18n.js';
 import { openTemplateMenu } from './templates.js';
 import {
     extractTagsFromTextArea,
@@ -267,8 +268,15 @@ class RelatedTagsUI {
         this.stylesBtn.type = 'button';
         this.stylesBtn.className = 'related-tags-style-button';
         this.stylesBtn.textContent = '★';
-        this.stylesBtn.title = 'Favorite prompt styles';
-        this.stylesBtn.setAttribute('aria-label', 'Favorite prompt styles');
+        const updateStylesLabel = () => {
+            const label = t('favorites', 'Favorite prompt styles');
+            this.stylesBtn.title = label;
+            this.stylesBtn.setAttribute('aria-label', label);
+        };
+        updateStylesLabel();
+        loadTranslations().then(updateStylesLabel);
+        this.stylesBtn.addEventListener('mouseenter', updateStylesLabel);
+        this.stylesBtn.addEventListener('focus', updateStylesLabel);
         this.stylesBtn.addEventListener('click', async (e) => {
             e.preventDefault();
             e.stopPropagation();
