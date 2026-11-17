@@ -178,8 +178,9 @@ export function attachTemplateButton(textarea) {
 
     const updatePosition = () => {
         const rect = textarea.getBoundingClientRect();
-        button.style.left = `${Math.max(4, rect.right - 68)}px`;
-        button.style.top = `${rect.top + 6}px`;
+        button.style.left = `${Math.max(4, rect.left + 6)}px`;
+        button.style.top = `${rect.bottom + 4}px`;
+        button.style.right = 'auto';
     };
     document.body.append(button);
     updatePosition();
