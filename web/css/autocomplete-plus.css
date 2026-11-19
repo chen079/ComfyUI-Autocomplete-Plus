@@ -115,7 +115,7 @@ body.dark-theme {
 }
 
 /* --- Keyboard hint footer --- */
-#autocomplete-plus-footer {
+.autocomplete-plus-footer {
   display: flex;
   flex-wrap: wrap;
   padding: 5px 12px;
@@ -127,7 +127,7 @@ body.dark-theme {
   white-space: nowrap;
 }
 
-#autocomplete-plus-footer kbd {
+.autocomplete-plus-footer kbd {
   display: inline-block;
   min-width: 1.6em;
   box-sizing: border-box;

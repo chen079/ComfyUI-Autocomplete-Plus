@@ -2,6 +2,7 @@ import { TagCategory, TagData, TagSource, autoCompleteData, getEnabledTagSourceI
 import { settingValues } from './settings.js';
 import { loadTranslations, t } from './i18n.js';
 import { openTemplateMenu } from './templates.js';
+import { renderKeyHints } from './autocomplete.js';
 import {
     extractTagsFromTextArea,
     findAllTagPositions,
@@ -296,6 +297,10 @@ class RelatedTagsUI {
         this.tagsContainer.id = 'related-tags-list';
         this.root.appendChild(this.tagsContainer);
 
+        this.footer = document.createElement('div');
+        this.footer.className = 'autocomplete-plus-footer';
+        this.root.appendChild(this.footer);
+
         // Add to DOM
         document.body.appendChild(this.root);
 
@@ -472,6 +477,11 @@ class RelatedTagsUI {
             : '↕️'; // Click to change display vertically
         this.toggleLayoutBtn.title = t('toggleLayout', 'Toggle between vertical and horizontal layout');
 
+        // Pin and layout only act on the related tags list, so hide them in the prompt styles only state
+        this.pinBtn.style.display = this.currentTag ? '' : 'none';
+        this.toggleLayoutBtn.style.display = this.currentTag ? '' : 'none';
+        renderKeyHints(this.footer);
+
         if (!this.currentTag) {
             this.headerText.textContent = t('title', 'Prompt styles');
             this.headerAlias.textContent = '';
@@ -531,6 +541,7 @@ class RelatedTagsUI {
     #updateContent() {
         this.tagsContainer.innerHTML = '';
         this.tagsContainer.style.display = this.currentTag ? '' : 'none';
+        this.footer.style.display = 'none';
         if (!this.currentTag) return;
 
         if (!autoCompleteData[TagSource.Danbooru].initialized) {
@@ -550,6 +561,8 @@ class RelatedTagsUI {
             this.tagsContainer.appendChild(messageDiv);
             return;
         }
+
+        this.footer.style.display = '';
 
         // Toggle column class based on settings
         this.tagsContainer.classList.toggle('no-alias', settingValues.hideAlias);
@@ -664,10 +677,10 @@ class RelatedTagsUI {
         this.root.style.top = `${placementArea.y}px`;
         this.root.style.maxWidth = `${placementArea.width}px`;
 
-        const newHeaderRect = this.header.getBoundingClientRect();
+        const headerFooterHeight = this.header.getBoundingClientRect().height + this.footer.getBoundingClientRect().height;
 
         if (this.relatedTags.length > 0) {
-            this.tagsContainer.style.maxHeight = `${placementArea.height - newHeaderRect.height}px`;
+            this.tagsContainer.style.maxHeight = `${placementArea.height - headerFooterHeight}px`;
         }
 
         // Hide it again after measurement

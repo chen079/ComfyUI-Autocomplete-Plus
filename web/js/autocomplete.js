@@ -384,6 +384,19 @@ function insertTagToTextArea(inputElement, tagDataToInsert) {
     }
 }
 
+/**
+ * Fills a popup footer with the keyboard shortcut hints shared by both popups.
+ * @param {HTMLElement} footer
+ */
+export function renderKeyHints(footer) {
+    footer.innerHTML = [
+        ['<kbd>↑</kbd><kbd>↓</kbd>', t('hintNavigate', 'Select')],
+        ['<kbd>Tab</kbd><kbd>Enter</kbd>', t('hintInsert', 'Insert')],
+        ['<kbd>F1</kbd>', t('hintWiki', 'Wiki')],
+        ['<kbd>Esc</kbd>', t('hintClose', 'Close')],
+    ].map(([keys, label]) => `<span>${keys} ${escapeHtml(label)}</span>`).join('');
+}
+
 // --- Autocomplete UI Class ---
 
 class AutocompleteUI {
@@ -408,18 +421,13 @@ class AutocompleteUI {
         stylesButton.className = 'related-tags-style-button';
         stylesButton.textContent = '★';
         this.footer = document.createElement('div');
-        this.footer.id = 'autocomplete-plus-footer';
+        this.footer.className = 'autocomplete-plus-footer';
         const updateHeader = () => {
             title.textContent = t('title', 'Prompt styles');
             const label = t('favorites', 'Favorite prompt styles');
             stylesButton.title = label;
             stylesButton.setAttribute('aria-label', label);
-            this.footer.innerHTML = [
-                ['<kbd>↑</kbd><kbd>↓</kbd>', t('hintNavigate', 'Select')],
-                ['<kbd>Tab</kbd><kbd>Enter</kbd>', t('hintInsert', 'Insert')],
-                ['<kbd>F1</kbd>', t('hintWiki', 'Wiki')],
-                ['<kbd>Esc</kbd>', t('hintClose', 'Close')],
-            ].map(([keys, label]) => `<span>${keys} ${escapeHtml(label)}</span>`).join('');
+            renderKeyHints(this.footer);
         };
         updateHeader();
         loadTranslations().then(updateHeader);
@@ -1154,6 +1162,9 @@ export class AutocompleteEventHandler {
      * @returns 
      */
     handleClick(event) {
+        // Clicking moves the caret away from the typed tag; close so it doesn't overlap the related tags panel
+        clearTimeout(this._debounceTimer);
+        this.autocompleteUI.hide();
     }
 }
 
