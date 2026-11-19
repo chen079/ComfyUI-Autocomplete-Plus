@@ -153,6 +153,9 @@ export function formatTextareaOnBlur(textarea) {
         // Try to preserve cursor position
         const newCursorPos = Math.min(cursorPos, formattedText.length);
         textarea.setSelectionRange(newCursorPos, newCursorPos);
+
+        // Sync widget value (required for Node 2.0 v-model textareas)
+        textarea.dispatchEvent(new Event('input', { bubbles: true }));
     }
 }
 

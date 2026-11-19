@@ -104,6 +104,21 @@ function initializeEventHandlers() {
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
+    // Node 2.0 (Vue nodes) renders its own textarea instead of the widget's DOM element,
+    // so attach on first focus of a textarea inside a Vue node widget.
+    document.addEventListener('focusin', (event) => {
+        const el = event.target;
+        if (el.tagName !== 'TEXTAREA' || el.readOnly || attachedElementNodeInfoMap.has(el)) return;
+
+        const widgetEl = el.closest('[data-widget-name]');
+        const nodeEl = widgetEl?.closest('[data-node-id]');
+        if (!nodeEl) return;
+
+        const node = app.canvas.graph.getNodeById(nodeEl.dataset.nodeId);
+        attachListeners(el, new NodeInfo(node?.comfyClass ?? 'unknown', widgetEl.dataset.widgetName));
+        handleFocus(event);
+    });
+
     /**
      * Get NodeInfo for the event target element
      * @param {Event} event - The DOM event
