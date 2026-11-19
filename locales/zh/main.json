@@ -19,6 +19,21 @@
     "close": "关闭",
     "positive": "正向",
     "negative": "负向",
-    "manage": "管理"
+    "manage": "管理",
+    "hintNavigate": "选择",
+    "hintInsert": "插入",
+    "hintWiki": "百科",
+    "hintClose": "关闭",
+    "openWiki": "打开百科页面",
+    "toggleLayout": "切换横向 / 纵向布局",
+    "pin": "固定",
+    "unpin": "取消固定",
+    "relatedTo": "相关标签：",
+    "loadingCooccurrence": "正在初始化共现数据...",
+    "noRelatedTags": "没有找到相关标签",
+    "similarity": "相关度",
+    "count": "使用次数",
+    "category": "类别",
+    "alias": "别名"
   }
 }

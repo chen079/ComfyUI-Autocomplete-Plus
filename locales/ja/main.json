@@ -19,6 +19,21 @@
     "close": "閉じる",
     "positive": "ポジティブ",
     "negative": "ネガティブ",
-    "manage": "管理"
+    "manage": "管理",
+    "hintNavigate": "選択",
+    "hintInsert": "挿入",
+    "hintWiki": "Wiki",
+    "hintClose": "閉じる",
+    "openWiki": "Wikiページを開く",
+    "toggleLayout": "縦横レイアウトを切り替え",
+    "pin": "ピン留め",
+    "unpin": "ピン留めを解除",
+    "relatedTo": "関連タグ：",
+    "loadingCooccurrence": "共起データを初期化中...",
+    "noRelatedTags": "関連タグが見つかりません",
+    "similarity": "類似度",
+    "count": "使用回数",
+    "category": "カテゴリ",
+    "alias": "エイリアス"
   }
 }

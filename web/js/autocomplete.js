@@ -407,11 +407,19 @@ class AutocompleteUI {
         stylesButton.type = 'button';
         stylesButton.className = 'related-tags-style-button';
         stylesButton.textContent = '★';
+        this.footer = document.createElement('div');
+        this.footer.id = 'autocomplete-plus-footer';
         const updateHeader = () => {
             title.textContent = t('title', 'Prompt styles');
             const label = t('favorites', 'Favorite prompt styles');
             stylesButton.title = label;
             stylesButton.setAttribute('aria-label', label);
+            this.footer.innerHTML = [
+                ['<kbd>↑</kbd><kbd>↓</kbd>', t('hintNavigate', 'Select')],
+                ['<kbd>Tab</kbd><kbd>Enter</kbd>', t('hintInsert', 'Insert')],
+                ['<kbd>F1</kbd>', t('hintWiki', 'Wiki')],
+                ['<kbd>Esc</kbd>', t('hintClose', 'Close')],
+            ].map(([keys, label]) => `<span>${keys} ${escapeHtml(label)}</span>`).join('');
         };
         updateHeader();
         loadTranslations().then(updateHeader);
@@ -433,6 +441,7 @@ class AutocompleteUI {
         this.tagsList = document.createElement('div');
         this.tagsList.id = 'autocomplete-plus-list';
         this.root.appendChild(this.tagsList);
+        this.root.appendChild(this.footer);
 
         // Add to DOM
         document.body.appendChild(this.root);
@@ -535,6 +544,7 @@ class AutocompleteUI {
      */
     #updateContent() {
         this.tagsList.innerHTML = '';
+        this.footer.style.display = this.candidates.length === 0 ? 'none' : '';
         if (this.candidates.length === 0) return;
 
         this.tagsList.classList.toggle('no-alias', settingValues.hideAlias);
@@ -545,7 +555,7 @@ class AutocompleteUI {
         this.candidates.forEach((tagData, index) => {
             const isExactMatch = tagData.tag === currentTag && (existingTags.filter(item => item === currentTag).length == 1);
             const isExistingTag = !isExactMatch && existingTags.includes(tagData.tag);
-            this.#createTagElement(tagData, index, isExistingTag);
+            this.#createTagElement(tagData, index, isExistingTag, currentTag);
         });
     }
 
@@ -554,8 +564,9 @@ class AutocompleteUI {
      * @param {TagData} tagData
      * @param {number} tagDataIndex
      * @param {boolean} isExisting
+     * @param {string} currentTag The partial tag being typed, highlighted in the tag name
      */
-    #createTagElement(tagData, tagDataIndex, isExisting) {
+    #createTagElement(tagData, tagDataIndex, isExisting, currentTag) {
         const categoryText = tagData.categoryText;
         const aliasText = tagData.alias.join(', ');
 
@@ -572,10 +583,16 @@ class AutocompleteUI {
         const tagSourceIconHtml = `<svg class="autocomplete-plus-tag-icon-svg"><use xlink:href="#autocomplete-plus-icon-${tagData.source}"></use></svg>`;
         const tagName = document.createElement('span');
         tagName.className = 'autocomplete-plus-tag-name';
+        const matchStart = currentTag ? tagData.tag.toLowerCase().indexOf(currentTag.toLowerCase()) : -1;
+        const matchEnd = matchStart + (currentTag?.length ?? 0);
+        const escapedTag = matchStart === -1
+            ? escapeHtml(tagData.tag)
+            : escapeHtml(tagData.tag.slice(0, matchStart))
+                + `<mark class="autocomplete-plus-match">${escapeHtml(tagData.tag.slice(matchStart, matchEnd))}</mark>`
+                + escapeHtml(tagData.tag.slice(matchEnd));
         if (settingValues.tagSourceIconPosition == 'hidden') {
-            tagName.textContent = tagData.tag;
+            tagName.innerHTML = escapedTag;
         } else {
-            const escapedTag = escapeHtml(tagData.tag);
             tagName.innerHTML = settingValues.tagSourceIconPosition == 'left'
                 ? `${tagSourceIconHtml} ${escapedTag}`
                 : `${escapedTag} ${tagSourceIconHtml}`;
@@ -593,7 +610,7 @@ class AutocompleteUI {
             wikiIcon.dataset.tagName = tagData.tag;
             wikiIcon.dataset.tagSource = tagData.source;
             wikiIcon.textContent = '📖'
-            wikiIcon.title = 'Open wiki page';
+            wikiIcon.title = t('openWiki', 'Open wiki page');
         } else {
             wikiIcon.classList.add('disabled');
         }
@@ -604,7 +621,10 @@ class AutocompleteUI {
 
         // Display alias if available
         if (aliasText.length > 0) {
-            alias.textContent = `${aliasText}`;
+            const aliasInner = document.createElement('span');
+            aliasInner.className = 'autocomplete-plus-alias-text';
+            aliasInner.textContent = aliasText;
+            alias.appendChild(aliasInner);
             alias.title = aliasText; // Full alias on hover
         }
 
@@ -614,9 +634,9 @@ class AutocompleteUI {
         tagCount.textContent = formatCountHumanReadable(tagData.count);
 
         // Create tooltip with more info
-        let tooltipText = `Count: ${tagData.count}\nCategory: ${categoryText}`;
+        let tooltipText = `${t('count', 'Count')}: ${tagData.count}\n${t('category', 'Category')}: ${categoryText}`;
         if (aliasText.length > 0) {
-            tooltipText += `\nAlias: ${aliasText}`;
+            tooltipText += `\n${t('alias', 'Alias')}: ${aliasText}`;
         }
         tagRow.title = tooltipText;
 
@@ -645,6 +665,7 @@ class AutocompleteUI {
         this.root.style.maxWidth = '';
         this.tagsList.style.maxHeight = '';
         const rootRect = this.root.getBoundingClientRect();
+        const headerFooterHeight = this.header.getBoundingClientRect().height + this.footer.getBoundingClientRect().height;
         // Hide it again after measurement
         this.root.style.display = 'none';
         this.root.style.visibility = 'visible';
@@ -723,7 +744,7 @@ class AutocompleteUI {
         this.root.style.left = `${leftPosition}px`;
         this.root.style.top = `${topPosition}px`;
         this.root.style.maxWidth = `${maxWidth}px`;
-        this.tagsList.style.maxHeight = `${Math.max(0, maxHeight - this.header.getBoundingClientRect().height)}px`;
+        this.tagsList.style.maxHeight = `${Math.max(0, maxHeight - headerFooterHeight)}px`;
     }
 
     /** Highlights the item (row) at the given index */

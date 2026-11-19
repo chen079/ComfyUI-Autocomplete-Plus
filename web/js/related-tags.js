@@ -228,7 +228,6 @@ class RelatedTagsUI {
         // Create layout toggle button
         this.toggleLayoutBtn = document.createElement('button');
         this.toggleLayoutBtn.className = 'related-tags-layout-toggle';
-        this.toggleLayoutBtn.title = 'Toggle between vertical and horizontal layout';
 
         // Add click handler for layout toggle
         this.toggleLayoutBtn.addEventListener('click', (e) => {
@@ -465,11 +464,13 @@ class RelatedTagsUI {
     #updateHeader() {
         // Update pin button
         this.pinBtn.textContent = this.isPinned ? '🎯' : '📌';
+        this.pinBtn.title = this.isPinned ? t('unpin', 'Unpin') : t('pin', 'Pin');
 
         // Update the button icon
         this.toggleLayoutBtn.innerHTML = settingValues.relatedTagsDisplayPosition === 'vertical'
             ? '↔️' // Click to change display horizontally
             : '↕️'; // Click to change display vertically
+        this.toggleLayoutBtn.title = t('toggleLayout', 'Toggle between vertical and horizontal layout');
 
         if (!this.currentTag) {
             this.headerText.textContent = t('title', 'Prompt styles');
@@ -490,11 +491,11 @@ class RelatedTagsUI {
 
         // Update header text with current tag
         this.headerText.innerHTML = ''; // Clear previous content
-        this.headerText.textContent = 'Tags related to: ';
+        this.headerText.textContent = `${t('relatedTo', 'Tags related to:')} `;
 
         const tagName = document.createElement('span');
         tagName.classList.add('related-tags-header-tag-name', tagData.source);
-        tagName.title = `Count: ${tagData.count}\nCategory: ${categoryText}\nAlias: ${aliasText}`;
+        tagName.title = `${t('count', 'Count')}: ${tagData.count}\n${t('category', 'Category')}: ${categoryText}\n${t('alias', 'Alias')}: ${aliasText}`;
         tagName.dataset.tagCategory = categoryText;
         tagName.dataset.tagSource = tagData.source;
         tagName.dataset.tagName = tagData.tag;
@@ -536,7 +537,7 @@ class RelatedTagsUI {
             // Show loading message
             const messageDiv = document.createElement('div');
             messageDiv.className = 'related-tags-message';
-            messageDiv.textContent = `Initializing cooccurrence data... [${autoCompleteData[TagSource.Danbooru].baseLoadingProgress.cooccurrence}%]`;
+            messageDiv.textContent = `${t('loadingCooccurrence', 'Initializing cooccurrence data...')} [${autoCompleteData[TagSource.Danbooru].baseLoadingProgress.cooccurrence}%]`;
             this.tagsContainer.appendChild(messageDiv);
             return;
         }
@@ -545,7 +546,7 @@ class RelatedTagsUI {
             // Show no related tags message
             const messageDiv = document.createElement('div');
             messageDiv.className = 'related-tags-message';
-            messageDiv.textContent = 'No related tags found';
+            messageDiv.textContent = t('noRelatedTags', 'No related tags found');
             this.tagsContainer.appendChild(messageDiv);
             return;
         }
@@ -554,11 +555,12 @@ class RelatedTagsUI {
         this.tagsContainer.classList.toggle('no-alias', settingValues.hideAlias);
 
         const existingTags = extractTagsFromTextArea(this.target);
+        const maxSimilarity = Math.max(...this.relatedTags.map(tagData => tagData.similarity));
 
         // Create tag rows
         this.relatedTags.forEach(tagData => {
             const isExisting = existingTags.includes(tagData.tag);
-            const tagRow = this.#createTagElement(tagData, isExisting);
+            const tagRow = this.#createTagElement(tagData, isExisting, maxSimilarity);
             this.tagsContainer.appendChild(tagRow);
         });
     }
@@ -567,9 +569,10 @@ class RelatedTagsUI {
      * Creates an HTML table row for a related tag.
      * @param {TagData} tagData The tag data to display
      * @param {boolean} isExisting Whether the tag already exists in the textarea
+     * @param {number} maxSimilarity Highest similarity in the list, used to scale the similarity bar
      * @returns {HTMLTableRowElement} The tag row element
      */
-    #createTagElement(tagData, isExisting) {
+    #createTagElement(tagData, isExisting, maxSimilarity) {
         const categoryText = tagData.categoryText;
         const aliasText = tagData.alias.join(', ');
 
@@ -595,7 +598,7 @@ class RelatedTagsUI {
             wikiIcon.dataset.tagName = tagData.tag;
             wikiIcon.dataset.tagSource = tagData.source;
             wikiIcon.textContent = '📖'
-            wikiIcon.title = 'Open wiki page';
+            wikiIcon.title = t('openWiki', 'Open wiki page');
         } else {
             wikiIcon.classList.add('disabled');
         }
@@ -606,7 +609,10 @@ class RelatedTagsUI {
 
         // Display alias if available
         if (aliasText.length > 0) {
-            alias.textContent = `${aliasText}`;
+            const aliasInner = document.createElement('span');
+            aliasInner.className = 'autocomplete-plus-alias-text';
+            aliasInner.textContent = aliasText;
+            alias.appendChild(aliasInner);
             alias.title = aliasText; // Full alias on hover
         }
 
@@ -614,11 +620,12 @@ class RelatedTagsUI {
         const similarity = document.createElement('span');
         similarity.className = 'related-tag-similarity';
         similarity.textContent = `${(tagData.similarity * 100).toFixed(2)}%`;
+        similarity.style.setProperty('--similarity-ratio', maxSimilarity > 0 ? tagData.similarity / maxSimilarity : 0);
 
         // Create tooltip with more info
-        let tooltipText = `Similarity: ${(tagData.similarity * 100).toFixed(2)}%\nCount: ${tagData.count}\nCategory: ${categoryText}`;
+        let tooltipText = `${t('similarity', 'Similarity')}: ${(tagData.similarity * 100).toFixed(2)}%\n${t('count', 'Count')}: ${tagData.count}\n${t('category', 'Category')}: ${categoryText}`;
         if (aliasText.length > 0) {
-            tooltipText += `\nAlias: ${aliasText}`;
+            tooltipText += `\n${t('alias', 'Alias')}: ${aliasText}`;
         }
         tagRow.title = tooltipText;
 

@@ -1,263 +1,104 @@
-/* Light Theme */
- body {
-  --autocomplete-plus-text-color-cat-blue: var(--p-blue-700);
-  --autocomplete-plus-text-color-cat-red: var(--p-red-600);
-  --autocomplete-plus-text-color-cat-purple: var(--p-purple-600);
-  --autocomplete-plus-text-color-cat-green: var(--p-green-700);
-  --autocomplete-plus-text-color-cat-yellow: var(--p-yellow-600);
-  --autocomplete-plus-text-color-cat-gray: var(--p-gray-600);
-  --autocomplete-plus-text-color-cat-sky: var(--p-sky-600);
-  --autocomplete-plus-text-color-cat-orange: var(--p-orange-600);
-  --autocomplete-plus-text-color-cat-white: var(--p-neutral-700);
-  --autocomplete-plus-text-color-disabled: var(--p-gray-400);
-  --autocomplete-plus-list-color-even: var(--p-neutral-300);
-  --autocomplete-plus-list-color-odd: var(--p-neutral-400);
-  --wiki-icon-text-color: var(--input-text);
-  --wiki-icon-opacity-normal: 0.7;
-  --wiki-icon-opacity-hover: 1.0;
-  --wiki-icon-opacity-disabled: 0;
+/* Colors follow the frontend's color-scheme (light / dark) */
+:root {
+  --autocomplete-plus-text-color-cat-blue: light-dark(#1d4ed8, #60a5fa);
+  --autocomplete-plus-text-color-cat-red: light-dark(#dc2626, #f87171);
+  --autocomplete-plus-text-color-cat-purple: light-dark(#9333ea, #c084fc);
+  --autocomplete-plus-text-color-cat-green: light-dark(#15803d, #4ade80);
+  --autocomplete-plus-text-color-cat-yellow: light-dark(#a16207, #facc15);
+  --autocomplete-plus-text-color-cat-gray: light-dark(#4b5563, #9ca3af);
+  --autocomplete-plus-text-color-cat-sky: light-dark(#0284c7, #7dd3fc);
+  --autocomplete-plus-text-color-cat-orange: light-dark(#ea580c, #fb923c);
+  --autocomplete-plus-text-color-cat-white: light-dark(#404040, #e5e5e5);
+  --autocomplete-plus-text-color-disabled: light-dark(#a3a3a3, #6b7280);
+  --autocomplete-plus-surface: var(--comfy-menu-bg, light-dark(#fff, #1e1e1e));
+  --autocomplete-plus-text: var(--input-text, light-dark(#222, #ddd));
+  --autocomplete-plus-muted: var(--descrip-text, light-dark(#666, #999));
+  --autocomplete-plus-outline: color-mix(in srgb, var(--autocomplete-plus-text) 14%, transparent);
+  --autocomplete-plus-header-bg: color-mix(in srgb, var(--autocomplete-plus-text) 4%, transparent);
+  --autocomplete-plus-hover-bg: color-mix(in srgb, var(--autocomplete-plus-text) 8%, transparent);
+  --autocomplete-plus-selected-bg: color-mix(in srgb, var(--autocomplete-plus-text) 14%, transparent);
+  --autocomplete-plus-shadow: 0 10px 28px rgb(0 0 0 / 35%), 0 2px 6px rgb(0 0 0 / 20%);
 }
 
-/* Dark Theme */
+/* Older frontends mark dark mode with a class instead of color-scheme */
 body.dark-theme {
-  --autocomplete-plus-text-color-cat-blue: var(--p-blue-400);
-  --autocomplete-plus-text-color-cat-red: var(--p-red-400);
-  --autocomplete-plus-text-color-cat-purple: var(--p-purple-400);
-  --autocomplete-plus-text-color-cat-green: var(--p-green-400);
-  --autocomplete-plus-text-color-cat-yellow: var(--p-yellow-400);
-  --autocomplete-plus-text-color-cat-gray: var(--p-gray-400);
-  --autocomplete-plus-text-color-cat-sky: var(--p-sky-300);
-  --autocomplete-plus-text-color-cat-orange: var(--p-orange-400);
-  --autocomplete-plus-text-color-cat-white: var(--p-neutral-200);
-  --autocomplete-plus-text-color-disabled: var(--p-gray-500);
-  --autocomplete-plus-list-color-even: var(--p-neutral-800);
-  --autocomplete-plus-list-color-odd: var(--p-neutral-900);
-  --wiki-icon-text-color: var(--input-text);
-  --wiki-icon-opacity-normal: 0.5;
-  --wiki-icon-opacity-hover: 0.9;
-  --wiki-icon-opacity-disabled: 0;
+  color-scheme: dark;
 }
 
-#autocomplete-plus-root {
-  position: absolute;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-  display: none;
-  width: fit-content;
-  background-color: var(--comfy-input-bg);
-  color: var(--input-text);
-}
-
-#autocomplete-plus-root .danbooru[data-tag-category="general"] {
-  color: var(--autocomplete-plus-text-color-cat-blue);
-}
-
-#autocomplete-plus-root .danbooru[data-tag-category="artist"] {
-  color: var(--autocomplete-plus-text-color-cat-red);
-}
-
-#autocomplete-plus-root .danbooru[data-tag-category="copyright"] {
-  color: var(--autocomplete-plus-text-color-cat-purple);
-}
-
-#autocomplete-plus-root .danbooru[data-tag-category="character"] {
-  color: var(--autocomplete-plus-text-color-cat-green);
-}
-
-#autocomplete-plus-root .danbooru[data-tag-category="meta"] {
-  color: var(--autocomplete-plus-text-color-cat-yellow);
-}
-
-#autocomplete-plus-root .danbooru[data-tag-category="unknown"] {
-  color: var(--autocomplete-plus-text-color-cat-gray);
-}
-
-#autocomplete-plus-root .e621[data-tag-category="general"] {
-  color: var(--autocomplete-plus-text-color-cat-sky);
-}
-
-#autocomplete-plus-root .e621[data-tag-category="artist"] {
-  color: var(--autocomplete-plus-text-color-cat-orange);
-}
-
-#autocomplete-plus-root .e621[data-tag-category="copyright"] {
-  color: var(--autocomplete-plus-text-color-cat-purple);
-}
-
-#autocomplete-plus-root .e621[data-tag-category="character"] {
-  color: var(--autocomplete-plus-text-color-cat-green);
-}
-
-#autocomplete-plus-root .e621[data-tag-category="species"] {
-  color: var(--autocomplete-plus-text-color-cat-red);
-}
-
-#autocomplete-plus-root .e621[data-tag-category="meta"] {
-  color: var(--autocomplete-plus-text-color-cat-white);
-}
-
-#autocomplete-plus-root .e621[data-tag-category="lore"] {
-  color: var(--autocomplete-plus-text-color-cat-red);
-}
-
-#autocomplete-plus-root .e621[data-tag-category="unknown"] {
-  color: var(--autocomplete-plus-text-color-cat-purple);
-}
-
-#autocomplete-plus-list {
-  display: grid;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
-  grid-auto-rows: auto;
-  grid-template-columns: max-content max-content 1fr auto;
-  overflow-y: auto;
-}
-
-#autocomplete-plus-list.no-alias {
-  grid-template-columns: max-content max-content auto;
-}
-
-.autocomplete-plus-item {
-  display: grid;
-  border-bottom: 1px solid var(--border-color);
-  cursor: pointer;
-  grid-column: 1 / -1;
-  grid-template-columns: subgrid;
-}
-
-.autocomplete-plus-item span {
-  align-content: center;
-  padding: 4px 8px;
-}
-
-/* Alternating row colors */
-.autocomplete-plus-item:nth-child(even) {
-  background-color: var(--autocomplete-plus-list-color-even);
-}
-
-.autocomplete-plus-item:nth-child(odd) {
-  background-color: var(--autocomplete-plus-list-color-odd);
-}
-
-.autocomplete-plus-item.selected {
-  background-color: var(--border-color);
-}
-
-.autocomplete-plus-item .autocomplete-plus-tag-name {
-  white-space: nowrap;
-}
-
-.autocomplete-plus-item .autocomplete-plus-tag-icon-svg {
-  width: 1em;
-  height: 1em;
-  vertical-align: middle;
-}
-
-.autocomplete-plus-tag-name.autocomplete-plus-already-exists  {
-  color: var(--autocomplete-plus-text-color-disabled);
-}
-
-.autocomplete-plus-item .autocomplete-plus-alias {
-  overflow: hidden;
-  color: var(--descrip-text);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.autocomplete-plus-item .autocomplete-plus-tag-count {
-  text-align: right;
-}
-
-.autocomplete-plus-item .autocomplete-plus-wiki-icon {
-  padding: 0 8px;
-  color: var(--wiki-icon-text-color);
-  cursor: pointer;
-  font-size: 1.2em;
-  opacity: var(--wiki-icon-opacity-normal);
-  text-align: center;
-  vertical-align: middle;
-}
-
-.autocomplete-plus-item .autocomplete-plus-wiki-icon:hover {
-  filter: brightness(1.1);
-  opacity: var(--wiki-icon-opacity-hover);
-}
-
-/* Hide wiki icon for tags without wiki pages */
-.autocomplete-plus-item .autocomplete-plus-wiki-icon.disabled {
-  cursor: default;
-  opacity: var(--wiki-icon-opacity-disabled);
-  pointer-events: none;
-}
-
-/* Related Tags UI Styles */
+/* --- Popup containers --- */
+#autocomplete-plus-root,
 #related-tags-root {
   position: absolute;
   z-index: 1000;
   top: 0;
   left: 0;
   display: none;
+  overflow: hidden;
   width: fit-content;
-  background-color: var(--comfy-input-bg);
-  color: var(--input-text);
+  border: 1px solid var(--autocomplete-plus-outline);
+  border-radius: 10px;
+  backdrop-filter: blur(14px) saturate(1.4);
+  background-color: color-mix(in srgb, var(--autocomplete-plus-surface) 88%, transparent);
+  box-shadow: var(--autocomplete-plus-shadow);
+  color: var(--autocomplete-plus-text);
+  font-size: 13px;
+  line-height: 1.4;
 }
 
-#related-tags-root .danbooru[data-tag-category="general"] {
+/* --- Tag category colors --- */
+:is(#autocomplete-plus-root, #related-tags-root) .danbooru[data-tag-category="general"] {
   color: var(--autocomplete-plus-text-color-cat-blue);
 }
 
-#related-tags-root .danbooru[data-tag-category="artist"] {
+:is(#autocomplete-plus-root, #related-tags-root) .danbooru[data-tag-category="artist"] {
   color: var(--autocomplete-plus-text-color-cat-red);
 }
 
-#related-tags-root .danbooru[data-tag-category="copyright"] {
+:is(#autocomplete-plus-root, #related-tags-root) .danbooru[data-tag-category="copyright"] {
   color: var(--autocomplete-plus-text-color-cat-purple);
 }
 
-#related-tags-root .danbooru[data-tag-category="character"] {
+:is(#autocomplete-plus-root, #related-tags-root) .danbooru[data-tag-category="character"] {
   color: var(--autocomplete-plus-text-color-cat-green);
 }
 
-#related-tags-root .danbooru[data-tag-category="meta"] {
+:is(#autocomplete-plus-root, #related-tags-root) .danbooru[data-tag-category="meta"] {
   color: var(--autocomplete-plus-text-color-cat-yellow);
 }
 
-#related-tags-root .danbooru[data-tag-category="unknown"] {
+:is(#autocomplete-plus-root, #related-tags-root) .danbooru[data-tag-category="unknown"] {
   color: var(--autocomplete-plus-text-color-cat-gray);
 }
 
-#related-tags-root .e621[data-tag-category="general"] {
+:is(#autocomplete-plus-root, #related-tags-root) .e621[data-tag-category="general"] {
   color: var(--autocomplete-plus-text-color-cat-sky);
 }
 
-#related-tags-root .e621[data-tag-category="artist"] {
+:is(#autocomplete-plus-root, #related-tags-root) .e621[data-tag-category="artist"] {
   color: var(--autocomplete-plus-text-color-cat-orange);
 }
 
-#related-tags-root .e621[data-tag-category="copyright"] {
+:is(#autocomplete-plus-root, #related-tags-root) .e621[data-tag-category="copyright"] {
   color: var(--autocomplete-plus-text-color-cat-purple);
 }
 
-#related-tags-root .e621[data-tag-category="character"] {
+:is(#autocomplete-plus-root, #related-tags-root) .e621[data-tag-category="character"] {
   color: var(--autocomplete-plus-text-color-cat-green);
 }
 
-#related-tags-root .e621[data-tag-category="species"] {
+:is(#autocomplete-plus-root, #related-tags-root) .e621:is([data-tag-category="species"], [data-tag-category="lore"]) {
   color: var(--autocomplete-plus-text-color-cat-red);
 }
 
-#related-tags-root .e621[data-tag-category="meta"] {
+:is(#autocomplete-plus-root, #related-tags-root) .e621[data-tag-category="meta"] {
   color: var(--autocomplete-plus-text-color-cat-white);
 }
 
-#related-tags-root .e621[data-tag-category="lore"] {
-  color: var(--autocomplete-plus-text-color-cat-red);
-}
-
-#related-tags-root .e621[data-tag-category="unknown"] {
+:is(#autocomplete-plus-root, #related-tags-root) .e621[data-tag-category="unknown"] {
   color: var(--autocomplete-plus-text-color-cat-gray);
 }
 
+/* --- Header --- */
 #related-tags-header,
 #autocomplete-plus-header {
   position: sticky;
@@ -265,19 +106,50 @@ body.dark-theme {
   top: 0;
   display: flex;
   align-items: center;
-  padding: 8px;
-  border-bottom: 1px solid var(--border-color);
-  background-color: var(--autocomplete-plus-list-color-even);
-  color: var(--descrip-text);
+  padding: 6px 8px 6px 12px;
+  border-bottom: 1px solid var(--autocomplete-plus-outline);
+  background-color: var(--autocomplete-plus-header-bg);
+  color: var(--autocomplete-plus-muted);
+  font-size: 12px;
   gap: 8px;
 }
 
+/* --- Keyboard hint footer --- */
+#autocomplete-plus-footer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px 12px;
+  border-top: 1px solid var(--autocomplete-plus-outline);
+  background-color: var(--autocomplete-plus-header-bg);
+  color: var(--autocomplete-plus-muted);
+  font-size: 11px;
+  gap: 4px 14px;
+  white-space: nowrap;
+}
+
+#autocomplete-plus-footer kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  box-sizing: border-box;
+  padding: 0 4px;
+  border: 1px solid var(--autocomplete-plus-outline);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  margin-right: 2px;
+  background-color: var(--autocomplete-plus-hover-bg);
+  color: var(--autocomplete-plus-text);
+  font-family: inherit;
+  font-size: 10px;
+  line-height: 1.5;
+  text-align: center;
+}
+
 .related-tags-header-text-container {
-  display:flex;
+  display: flex;
   flex: 1;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 8px 12px;
 }
 
 .related-tags-header-tag-text {
@@ -287,7 +159,8 @@ body.dark-theme {
 
 .related-tags-header-tag-name {
   cursor: pointer;
-  font-weight: bold;
+  font-size: 13px;
+  font-weight: 600;
   word-break: break-all;
 }
 
@@ -296,128 +169,211 @@ body.dark-theme {
   text-decoration: none;
 }
 
-.related-tags-header-tag-name .autocomplete-plus-tag-icon-svg {
-  width: 1em;
-  height: 1em;
-  vertical-align: middle;
-}
-
 .related-tags-header-tag-alias {
-    overflow: auto;
-    max-height: 5em;
-    padding: 2px 4px;
-    border-radius: 4px;
-    background-color: var(--bg-color);
-    color: var(--descrip-text);
-    line-height: 1.25em;
+  overflow: auto;
+  max-height: 5em;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background-color: var(--autocomplete-plus-hover-bg);
+  color: var(--autocomplete-plus-muted);
+  line-height: 1.25em;
 }
 
 .related-tags-header-controls {
+  display: flex;
   margin-left: auto;
+  gap: 2px;
 }
 
 .related-tags-header-controls button {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  padding: 0;
   border: none;
+  border-radius: 6px;
   background: none;
-  color: var(--input-text);
+  color: var(--autocomplete-plus-muted);
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.2s;
+  place-items: center;
+  transition: background-color 0.15s, color 0.15s;
 }
 
-.related-tags-header-controls button:hover {
-  background-color: var(--border-color);
+/* Emoji icons are desaturated so the header stays calm; color returns on hover / when active */
+.related-tags-header-controls button {
+  filter: grayscale(1);
+  opacity: 0.75;
 }
 
+.related-tags-header-controls button:hover,
+.related-tags-header-controls button.active {
+  background-color: var(--autocomplete-plus-selected-bg);
+  color: var(--autocomplete-plus-text);
+  filter: none;
+  opacity: 1;
+}
+
+/* --- Lists --- */
+#autocomplete-plus-list,
 #related-tags-list {
   display: grid;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+  overflow-y: auto;
+  padding: 4px;
   grid-auto-rows: auto;
   grid-template-columns: max-content max-content 1fr auto;
-  overflow-y: auto;
+  row-gap: 1px;
+  scrollbar-color: var(--autocomplete-plus-outline) transparent;
+  scrollbar-width: thin;
 }
 
+#autocomplete-plus-list.no-alias,
 #related-tags-list.no-alias {
   grid-template-columns: max-content max-content auto;
 }
 
+.autocomplete-plus-item,
 .related-tag-item {
   display: grid;
-  border-bottom: 1px solid var(--border-color);
+  border-radius: 6px;
   cursor: pointer;
   grid-column: 1 / -1;
   grid-template-columns: subgrid;
+  transition: background-color 0.1s;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
+.autocomplete-plus-item span,
 .related-tag-item span {
   align-content: center;
-  padding: 4px 8px;
-}
-
-.related-tag-item:nth-child(even) {
-  background-color: var(--autocomplete-plus-list-color-even);
-}
-
-.related-tag-item:nth-child(odd) {
-  background-color: var(--autocomplete-plus-list-color-odd);
+  padding: 4px 10px;
 }
 
 .related-tag-item:hover {
-  background-color: var(--p-form-field-filled-hover-background);
+  background-color: var(--autocomplete-plus-hover-bg);
 }
 
+/* Selected row: tinted background with an accent bar in the tag's category color */
+.autocomplete-plus-item.selected,
 .related-tag-item.selected {
-  background-color: var(--border-color);
+  background-color: var(--autocomplete-plus-selected-bg);
+  box-shadow: inset 3px 0 0 currentcolor;
 }
 
+.autocomplete-plus-item .autocomplete-plus-tag-name,
 .related-tag-item .related-tag-name {
+  font-weight: 500;
   white-space: nowrap;
 }
 
-.related-tag-item .related-tag-name.related-tag-already-exists  {
-  color: var(--autocomplete-plus-text-color-disabled);
+/* Part of the tag matching the typed text */
+.autocomplete-plus-item .autocomplete-plus-match {
+  border-radius: 3px;
+  background-color: color-mix(in srgb, currentcolor 18%, transparent);
+  color: inherit;
+  font-weight: 700;
 }
 
+:is(#autocomplete-plus-root, #related-tags-root) .autocomplete-plus-tag-icon-svg {
+  width: 1em;
+  height: 1em;
+  opacity: 0.85;
+  vertical-align: -0.125em;
+}
+
+.autocomplete-plus-tag-name.autocomplete-plus-already-exists,
+.related-tag-item .related-tag-name.related-tag-already-exists {
+  color: var(--autocomplete-plus-text-color-disabled);
+  font-weight: 400;
+}
+
+/* Alias column is capped; long aliases are truncated and scroll on row hover */
+.autocomplete-plus-item .autocomplete-plus-alias,
 .related-tag-item .related-tag-alias {
   overflow: hidden;
-  color: var(--descrip-text);
+  max-width: 20em;
+  color: var(--autocomplete-plus-muted);
+  font-size: 12px;
+}
+
+:is(.autocomplete-plus-item, .related-tag-item) .autocomplete-plus-alias-text {
+  display: block;
+  overflow: hidden;
+  padding: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+:is(.autocomplete-plus-item, .related-tag-item):hover .autocomplete-plus-alias-text {
+  overflow: visible;
+  width: max-content;
+  min-width: 100%;
+  animation: autocomplete-plus-alias-scroll 5s ease-in-out infinite alternate;
+  text-overflow: clip;
+}
+
+/* margin-left (% of column) + translateX (% of text) ends with the text's right edge at the column's right edge */
+@keyframes autocomplete-plus-alias-scroll {
+  0%,
+  15% {
+    margin-left: 0;
+    transform: translateX(0);
+  }
+
+  85%,
+  100% {
+    margin-left: 100%;
+    transform: translateX(-100%);
+  }
+}
+
+.autocomplete-plus-item .autocomplete-plus-tag-count,
 .related-tag-item .related-tag-similarity {
-  color: var(--descrip-text);
+  color: var(--autocomplete-plus-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
   text-align: right;
   white-space: nowrap;
 }
 
-.related-tag-item .related-tag-wiki-icon {
-  padding: 0 8px;
-  color: var(--wiki-icon-text-color);
-  cursor: pointer;
-  font-size: 1.2em;
-  opacity: var(--wiki-icon-opacity-normal);
-  text-align: center;
-  transition: opacity 0.1s ease;
-  vertical-align: middle;
+/* Similarity bar under the percentage, scaled to the most similar tag */
+.related-tag-item .related-tag-similarity {
+  min-width: 4.5em;
+  background-image: linear-gradient(currentcolor, currentcolor);
+  background-position: right 10px bottom 3px;
+  background-repeat: no-repeat;
+  background-size: calc((100% - 20px) * var(--similarity-ratio, 0)) 2px;
 }
 
-.related-tag-item .related-tag-wiki-icon:hover {
-  filter: brightness(1.1);
-  opacity: var(--wiki-icon-opacity-hover);
+/* Wiki icon: only shown on the hovered / selected row */
+.autocomplete-plus-item .autocomplete-plus-wiki-icon,
+.related-tag-item .related-tag-wiki-icon {
+  padding: 0 4px;
+  cursor: pointer;
+  font-size: 1.1em;
+  opacity: 0;
+  text-align: center;
+  transition: opacity 0.1s;
+}
+
+:is(.autocomplete-plus-item, .related-tag-item):is(:hover, .selected) :is(.autocomplete-plus-wiki-icon, .related-tag-wiki-icon) {
+  opacity: 0.6;
+}
+
+:is(.autocomplete-plus-item, .related-tag-item) :is(.autocomplete-plus-wiki-icon, .related-tag-wiki-icon):hover {
+  opacity: 1;
 }
 
 /* Hide wiki icon for tags without wiki pages */
-.related-tag-item .related-tag-wiki-icon.disabled {
+:is(.autocomplete-plus-item, .related-tag-item) :is(.autocomplete-plus-wiki-icon, .related-tag-wiki-icon).disabled {
   cursor: default;
-  opacity: var(--wiki-icon-opacity-disabled);
+  opacity: 0;
   pointer-events: none;
 }
 
 .related-tags-message {
   width: 100%;
   padding: 12px;
+  color: var(--autocomplete-plus-muted);
   font-style: italic;
   grid-column: 1 / -1;
   text-align: center;
@@ -429,70 +385,75 @@ body.dark-theme {
   font-style: italic;
   text-align: center;
 }
+
+/* --- Prompt styles menu / editor --- */
 .autocomplete-plus-template-menu {
-    position: fixed;
-    z-index: 10000;
-    display: flex;
-    gap: 4px;
-    padding: 6px;
-    border: 1px solid var(--p-panel-border-color, #777);
-    border-radius: 4px;
-    background: var(--p-panel-background, #222);
-    box-shadow: 0 2px 8px #0008;
+  position: fixed;
+  z-index: 10000;
+  display: flex;
+  padding: 6px;
+  border: 1px solid var(--autocomplete-plus-outline);
+  border-radius: 8px;
+  background: var(--autocomplete-plus-surface);
+  box-shadow: var(--autocomplete-plus-shadow);
+  color: var(--autocomplete-plus-text);
+  gap: 4px;
 }
 
 .autocomplete-plus-template-select {
-    min-width: 150px;
+  min-width: 150px;
 }
 
 .autocomplete-plus-template-actions {
-    display: flex;
-    gap: 3px;
+  display: flex;
+  gap: 3px;
 }
 
 .autocomplete-plus-style-editor {
-    position: fixed;
-    inset: 0;
-    z-index: 10001;
-    display: grid;
-    place-items: center;
-    background: #0008;
+  position: fixed;
+  z-index: 10001;
+  display: grid;
+  background: rgb(0 0 0 / 50%);
+  inset: 0;
+  place-items: center;
 }
 
 .autocomplete-plus-style-editor-dialog {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: min(720px, calc(100vw - 32px));
-    padding: 16px;
-    border: 1px solid var(--p-panel-border-color, #777);
-    border-radius: 6px;
-    background: var(--p-panel-background, #222);
+  display: flex;
+  width: min(720px, calc(100vw - 32px));
+  flex-direction: column;
+  padding: 16px;
+  border: 1px solid var(--autocomplete-plus-outline);
+  border-radius: 10px;
+  background: var(--autocomplete-plus-surface);
+  box-shadow: var(--autocomplete-plus-shadow);
+  color: var(--autocomplete-plus-text);
+  gap: 8px;
 }
 
 .autocomplete-plus-style-editor-dialog h3 {
-    margin: 0;
+  margin: 0;
 }
 
 .autocomplete-plus-style-list,
 .autocomplete-plus-style-form input,
 .autocomplete-plus-style-form textarea {
-    box-sizing: border-box;
-    width: 100%;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .autocomplete-plus-style-form {
-    display: grid;
-    gap: 6px;
+  display: grid;
+  gap: 6px;
 }
 
 .autocomplete-plus-style-form textarea {
-    min-height: 100px;
-    resize: vertical;
+  min-height: 100px;
+  resize: vertical;
 }
 
 .autocomplete-plus-style-editor-actions {
-    display: flex;
-    gap: 6px;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
 }

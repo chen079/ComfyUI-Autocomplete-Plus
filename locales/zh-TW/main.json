@@ -19,6 +19,21 @@
     "close": "關閉",
     "positive": "正向",
     "negative": "負向",
-    "manage": "管理"
+    "manage": "管理",
+    "hintNavigate": "選擇",
+    "hintInsert": "插入",
+    "hintWiki": "百科",
+    "hintClose": "關閉",
+    "openWiki": "開啟百科頁面",
+    "toggleLayout": "切換橫向 / 縱向版面",
+    "pin": "釘選",
+    "unpin": "取消釘選",
+    "relatedTo": "相關標籤：",
+    "loadingCooccurrence": "正在初始化共現資料...",
+    "noRelatedTags": "找不到相關標籤",
+    "similarity": "相關度",
+    "count": "使用次數",
+    "category": "類別",
+    "alias": "別名"
   }
 }

@@ -19,6 +19,21 @@
     "close": "Close",
     "positive": "Positive",
     "negative": "Negative",
-    "manage": "Manage"
+    "manage": "Manage",
+    "hintNavigate": "Select",
+    "hintInsert": "Insert",
+    "hintWiki": "Wiki",
+    "hintClose": "Close",
+    "openWiki": "Open wiki page",
+    "toggleLayout": "Toggle between vertical and horizontal layout",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "relatedTo": "Tags related to:",
+    "loadingCooccurrence": "Initializing cooccurrence data...",
+    "noRelatedTags": "No related tags found",
+    "similarity": "Similarity",
+    "count": "Count",
+    "category": "Category",
+    "alias": "Alias"
   }
 }
